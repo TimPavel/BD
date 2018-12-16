@@ -1,0 +1,73 @@
+1. Сделать запрос, в котором мы выберем все данные о городе – регион, страна.
+
+use geodata;
+
+SELECT _countries.title AS country,
+  _regions.title AS region, 
+  _cities.title AS city
+  _cities INNER JOIN _countries ON _cities.country_id = _countries.id 
+  LEFT JOIN _regions ON _cities.region_id = _regions.id
+  WHERE _cities.title = 'Раменское';
+
+
+-------------2--------------------------------------------
+2. Выбрать все города из Московской области.
+
+use geodata;
+
+SELECT _countries.title AS country, 
+  _regions.title AS region,
+  _cities.title AS city
+  FROM _cities, _countries, _regions 
+  WHERE _regions.title = 'Московская область' 
+  AND 
+  _cities.country_id = _countries.id  
+  AND 
+  _cities.region_id = _regions.id;
+
+-------------3-------------------------------------------
+1. Выбрать среднюю зарплату по отделам.
+
+use employees; 
+SELECT avg(salaries.salary) AS salary, 
+  departments.dept_name AS department 
+
+  FROM salaries 
+  INNER JOIN dept_emp ON salaries.emp_no = dept_emp.emp_no 
+  INNER JOIN departments ON dept_emp.dept_no = departments.dept_no
+  GROUP BY department;
+
+-----------4----------------------------------------------------
+2. Выбрать максимальную зарплату у сотрудника.
+
+use employees;
+SELECT CONCAT(employees.first_name, " ", employees.last_name) AS employ, 
+  salary AS salary 
+  FROM salaries 
+  INNER JOIN employees ON salaries.emp_no = employees.emp_no 
+  GROUP BY salary DESC 
+  HAVING (max(salary)) 
+  LIMIT 1;
+
+-----------5-------------------------------------------------------
+3. Удалить одного сотрудника, у которого максимальная зарплата.
+
+use employees;
+DELETE FROM employees 
+WHERE emp_no = (SELECT salaries.emp_no 
+    FROM salaries 
+    GROUP BY salaries.salary DESC
+    HAVING (max(salaries.salary))
+    LIMIT 1);
+
+------------6------------------------------------------------
+4. Посчитать количество сотрудников во всех отделах.
+
+use employees;
+SELECT departments.dept_name AS department, 
+  count(dept_emp.emp_no) AS quantity
+  FROM dept_emp 
+  INNER JOIN departments ON dept_emp.dept_no = departments.dept_no 
+  GROUP by department;
+
+-------------------------------
