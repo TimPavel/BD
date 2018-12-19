@@ -1,0 +1,38 @@
+------1. Создать VIEW на основе запросов, которые вы сделали в ДЗ к уроку 3.-------------------
+
+CREATE VIEW getmaxsalary AS 
+SELECT CONCAT(employees.first_name, " ", employees.last_name) AS employ, 
+salary AS salary 
+FROM salaries 
+  INNER JOIN employees ON salaries.emp_no = employees.emp_no 
+  GROUP BY salary DESC 
+  HAVING (max(salary)) 
+  LIMIT 1;
+  
+  
+ ---2. Создать функцию, которая найдет менеджера по имени и фамилии сотрудника. Функция должна принимать  в себя 2 переменных (Имя и Фамилию)-------------------------------------
+USE `employees`;
+DROP function IF EXISTS `getManagerNum`;
+
+DELIMITER $$
+USE `employees`$$
+CREATE DEFINER=`root`@`%` FUNCTION `getManagerNum`(first_name varchar(30), last_name varchar(30)) RETURNS int(11)
+BEGIN
+DECLARE num int;
+SET num := (SELECT dm.emp_no
+FROM dept_emp de 
+INNER JOIN dept_manager dm ON dm.emp_no = de.emp_no
+AND dm.to_date = '9999-01-01'
+WHERE de.dept_no = (
+	SELECT de.dept_no
+	FROM dept_emp de
+    INNER JOIN employees e ON de.emp_no = e.emp_no 
+	WHERE e.last_name = last_name AND e.first_name = first_name
+    LIMIT 1
+    ));
+RETURN num;
+END$$
+
+DELIMITER ;
+
+SELECT getManagerNum("Georgi", "Facello");
