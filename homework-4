@@ -37,3 +37,13 @@ END$$
 DELIMITER ;
 
 SELECT getManagerNum("Georgi", "Facello");
+
+---3. Создать триггер, который при добавлении нового сотрудника будет выплачивать ему вступительный бонус, занося запись об этом в таблицу salary.
+USE employees;
+DELIMITER $$
+DROP TRIGGER IF EXISTS bonus $$
+CREATE TRIGGER bonus BEFORE INSERT ON employees FOR EACH ROW
+BEGIN
+ INSERT INTO salaries (emp_no, salary, from_date, to_date) VALUES (10000, 1000, now(), '9999-01-01');
+END $$
+
