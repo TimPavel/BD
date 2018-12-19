@@ -11,12 +11,13 @@ FROM salaries
   
   
  ---2. Создать функцию, которая найдет менеджера по имени и фамилии сотрудника. Функция должна принимать  в себя 2 переменных (Имя и Фамилию)-------------------------------------
+
 USE `employees`;
 DROP function IF EXISTS `getManagerNum`;
 
 DELIMITER $$
 USE `employees`$$
-CREATE DEFINER=`root`@`%` FUNCTION `getManagerNum`(first_name varchar(30), last_name varchar(30)) RETURNS int(11)
+CREATE FUNCTION `getManagerNum`(first_name varchar(30), last_name varchar(30)) RETURNS int(11)
 BEGIN
 DECLARE num int;
 SET num := (SELECT dm.emp_no
