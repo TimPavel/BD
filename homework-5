@@ -1,0 +1,6 @@
+use employees;
+SET autocommit = 0;
+START TRANSACTION;
+INSERT INTO bonus (emp_no, size) VALUES (10001, 500);
+INSERT INTO logtable (name, description) VALUES ('bonus', 'bonuus for ');
+COMMIT;
