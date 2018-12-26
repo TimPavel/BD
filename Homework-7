@@ -7,4 +7,4 @@ FLUSH PRIVILEGES;
 
 --2. Сделать резервную копию базы, удалить базу и пересоздать из бекапа.
       
-          UNDEК RECONSTRUCTION
+          UNDER RECONSTRUCTION
