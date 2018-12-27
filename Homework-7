@@ -5,6 +5,10 @@ GRANT ALL PRIVILEGES ON geodata.* TO 'user2'@'%';
 FLUSH PRIVILEGES;
 
 
+
 --2. Сделать резервную копию базы, удалить базу и пересоздать из бекапа.
       
-          UNDER RECONSTRUCTION
+mysqldump -u root -p shop > D:\GeekBrains\9_DB\dump.sql
+DROP database shop;
+CREATE DATABASE shop;
+mysql -u root -p shop < D:\GeekBrains\9_DB\dump.sql
